@@ -130,6 +130,11 @@ int MatInverse(double mat[], double(*tam), double(*m), int n)
 				bad++;
 			}
 		}
+		if (abs(mat[i * n + i]) < eps* 1e-16)
+		{
+			cout << "UNINVERTABLE " << endl;
+			return -2;
+		}
 		if (bad == n)
 		{
 			cout << "Your matrix is uninvertable" << endl;
@@ -139,11 +144,6 @@ int MatInverse(double mat[], double(*tam), double(*m), int n)
 
 	for (int i = n - 1; i > -1; i--)
 	{
-		if (abs(mat[i * n + i]) < eps* 1e-16)
-		{
-			cout << "UNINVERTABLE " << endl;
-			return -2;
-		}
 		for (int k = 0; k < n; k++)
 		{
 			tam[i * n + k] /= mat[i * n + i];
