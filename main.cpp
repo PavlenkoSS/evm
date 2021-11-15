@@ -424,6 +424,11 @@ int main(int nargs, char** args)
 		cout << "bad params" << endl;
 		return -1;
 	}
+	if(n==0)
+	{
+		cout << "bad param n" << endl;
+		return -1;
+	}
 	 if(args[4] == nullptr || sscanf(args[4], "%s", filename) != 1)
             {
                 cout << "No filename" << endl;

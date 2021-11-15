@@ -86,7 +86,7 @@ int rotMat(double(*mat), double(*T), int n, int I, int J) //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï
 */
 int MatInverse(double mat[], double(*tam), double(*m), int n)
 {
-	double eps = normByMinMat(mat, n);
+	double eps = normByMaxMat(mat, n);
 
 	for (int i = 0; i < n; i++)
 	{
@@ -141,7 +141,6 @@ int MatInverse(double mat[], double(*tam), double(*m), int n)
 	{
 		if (abs(mat[i * n + i]) < eps* 1e-16)
 		{
-			cout << eps << endl;
 			cout << "UNINVERTABLE " << endl;
 			return -2;
 		}

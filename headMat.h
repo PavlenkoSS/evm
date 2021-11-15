@@ -28,6 +28,5 @@ int fulMat(double(*mat), int n, int k, string filename);
 void multMat(double(*mat1), double(*mat2), double(*m), int n);
 int outMat1(double mat[], int n, int m);
 int eqMat(double(*mat1), double(*mat2), int n, int m);
-double normByMinMat(double(*mat), int n);
 
 #endif
