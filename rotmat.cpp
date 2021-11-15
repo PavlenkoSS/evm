@@ -8,7 +8,7 @@ int uptriangleMat(double(*mat), double(*tam), double(*m), double(*t), int n, int
 {
 	double x = mat[I * n + I];
 	double y = mat[J * n + I];
-	if ((abs(x) > 1e-16*eps) || (abs(y) > 1e-16*eps))
+	if ((abs(x) > 1e-12*eps) || (abs(y) > 1e-12*eps))
 	{
 		double Cos = x / sqrt(x * x + y * y);
 		double Sin = -y / sqrt(x * x + y * y);
@@ -86,9 +86,8 @@ int rotMat(double(*mat), double(*T), int n, int I, int J) //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï
 */
 int MatInverse(double mat[], double(*tam), double(*m), int n)
 {
-	double eps = normByMaxMat(mat, n);
+	double eps = normByMinMat(mat, n);
 
-	
 	for (int i = 0; i < n; i++)
 	{
 		int bad = 1;
@@ -99,7 +98,7 @@ int MatInverse(double mat[], double(*tam), double(*m), int n)
 			int J = j;
 			double x = mat[I * n + I];
 			double y = mat[J * n + I];
-			if ((abs(x) > 1e-25*eps) || (abs(y) > 1e-25*eps))
+			if ((abs(x) > 1e-16*eps) || (abs(y) > 1e-16*eps))
 			{
 				double Cos = x / sqrt(x * x + y * y);
 				double Sin = -y / sqrt(x * x + y * y);
@@ -127,7 +126,7 @@ int MatInverse(double mat[], double(*tam), double(*m), int n)
 
 			}else
 			{
-				cout << i << ' ' << j << endl;
+				//cout << i << ' ' << j << endl;
 				bad++;
 			}
 		}
@@ -140,8 +139,9 @@ int MatInverse(double mat[], double(*tam), double(*m), int n)
 
 	for (int i = n - 1; i > -1; i--)
 	{
-		if (abs(mat[i * n + i]) < eps*1e-25)
+		if (abs(mat[i * n + i]) < eps* 1e-16)
 		{
+			cout << eps << endl;
 			cout << "UNINVERTABLE " << endl;
 			return -2;
 		}
@@ -187,4 +187,3 @@ double normByMaxMat(double(*mat), int n)
 	}
 	return max;
 }
-
