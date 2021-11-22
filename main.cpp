@@ -435,14 +435,10 @@ int main(int nargs, char** args)
                 return -1;
             }
 	double* M;
-	double* M_copy;
 	double* E;
-	double* mem;
 	double* mem2;
-	mem = new double[n * n];
 	M = new double[n * n];
 	mem2 = new double[n + n];
-	M_copy = new double[n * n];
 	E = new double[n * n];	
 
 	idMat(E, n);
@@ -453,42 +449,36 @@ int main(int nargs, char** args)
 		return -1;
 	}
 
-	eqMat(M_copy, M, n, n);
 	cout << "M = " << endl;
 	outMat1(M, n,m);
 
-	int start_time = clock();
+	double start_time = clock();
 	if (MatInverse(M, E, mem2, n) == -2)
 	{
-		delete[]M_copy;
 		delete[]E;
 		delete[]M;
-		delete[]mem;
 		delete[]mem2;
 		return -2;
 	}
-	int end_time = clock();
+	double end_time = clock();
 	cout <<"Time of inversing = " << (-start_time + end_time)/1e6 << endl;
 
-	cout << "E = " << endl;
+	cout << "M^-1 = " << endl;
 	if (outMat1(E, n, m) == -2)
 	{
-		delete[]M_copy;
 		delete[]E;
 		delete[]M;
-		delete[]mem;
 		delete[]mem2;
 		return -2;
 	}
-	multMat(E, M_copy, mem, n);
+	//multMat(E, M_copy, mem, n);
 	cout << "ANS = ";
-	idMat(E, n);
-	cout << normMat(M_copy, E , n)<< endl;
+	//idMat(E, n);
+	fulMat(M, n, k, string(filename));
+	cout << smartNormMat(M, E, n)<< endl;
 
 	delete[]M;
-	delete[]M_copy;
 	delete[]E;
-	delete[]mem;
 	delete[]mem2;
 	return 0;
 }

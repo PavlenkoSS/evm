@@ -46,17 +46,16 @@ double normMat(double(*mat), double(*tam), int n)
 	double a = 0, A = 0;
 	for (int j = 0; j < n; j++)
 	{
-		a +=  mat[j] - tam[j];
+		a +=  abs(mat[j] - tam[j]);
 	}
-	A = abs(a);
+	A = a;
 	for (int i = 1; i < n; i++)
 	{
 		a = 0;
 		for (int j = 0; j < n; j++)
 		{
-			a +=  mat[i * n + j] - tam[i * n + j];
+			a +=  abs(mat[i * n + j] - tam[i * n + j]);
 		}
-		a = abs(a);
 		if (a > A)
 		{
 			A = a;
@@ -87,10 +86,8 @@ int rotMat(double(*mat), double(*T), int n, int I, int J) //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï
 int MatInverse(double mat[], double(*tam), double(*m), int n)
 {
 	double eps = normByMaxMat(mat, n);
-
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n-1; i++)
 	{
-		int bad = 1;
 		for (int j = i + 1; j < n; j++)
 		{
 			//bad += uptriangleMat(mat, tam, m, t, n, i, j, eps);
@@ -98,10 +95,11 @@ int MatInverse(double mat[], double(*tam), double(*m), int n)
 			int J = j;
 			double x = mat[I * n + I];
 			double y = mat[J * n + I];
-			if ((abs(x) > 1e-16*eps) || (abs(y) > 1e-16*eps))
+			double sq = sqrt(x * x + y * y);
+			if (sq > 1e-16*eps)
 			{
-				double Cos = x / sqrt(x * x + y * y);
-				double Sin = -y / sqrt(x * x + y * y);
+				double Cos = x / sq;
+				double Sin = -y / sq;
 				for (int j1 = I; j1 < n; j1++)
 				{
 
@@ -124,21 +122,17 @@ int MatInverse(double mat[], double(*tam), double(*m), int n)
 					tam[J * n + j1] = m[n + j1];
 				}
 
-			}else
-			{
-				//cout << i << ' ' << j << endl;
-				bad++;
 			}
+		}
+		for (int j = i + 1; j < n; j++)
+		{
+			mat[j*n+i]=0;
 		}
 		if (abs(mat[i * n + i]) < eps* 1e-16)
 		{
+			cout << i << ' ' << mat[i * n + i] << endl;
 			cout << "UNINVERTABLE " << endl;
 			return -2;
-		}
-		if (bad == n)
-		{
-			cout << "Your matrix is uninvertable" << endl;
-			return 1;
 		}
 	}
 

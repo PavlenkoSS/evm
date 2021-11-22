@@ -33,16 +33,22 @@ int fulMat(double(*mat), int n, int k, string filename)
 			cout << "File was not opened"<< endl;
 			return -1; // �� �������� ����
 		}
-		for (int i = 0; i < n; i++)
+		for(int i=0; i<n*n; i++)
 		{
-			for (int j = 0; j < n; j++)
+			if(!fin.eof())
 			{
-				double a;
-				fin >> a;
-				mat[i * n + j] = a;
-
+				fin >> mat[i];
 			}
-			cout << endl;
+			if((fin.eof())&&(i!=(n*n-1)))
+			{
+				cout << "Filling error" << endl;
+				return -1;
+			}
+			if((!fin.eof())&&(i==(n*n-1)))
+			{
+				cout << "Filling error" << endl;
+				return -1;
+			}
 		}
 		cout << endl << endl;
 		fin.close();
@@ -146,14 +152,26 @@ int fulMat(double(*mat), int n, int k, string filename)
 
 		I = 0;
 		break;
+		case 9:
+		I = n-1;
+		for (int i = 0; i < n; I--, i++)
+		{
+			J = n-1;
+			for (int j = 0; j < n; J--, j++)
+			{
+				mat[i * n + j] = (1 / (I + J+1));
+			}
+		}
+		break;
+
 	}
+	
 
 	return 0;
 }
 //��������� mat2 := mat1 * mat2
 void multMat(double(*mat1), double(*mat2), double(*m), int n)
 {
-
 	double a = 0;
 	for (int i = 0; i < n; i++)
 	{
@@ -210,4 +228,31 @@ int eqMat(double(*mat1), double (*mat2), int n, int m)
 		}
 	}
 	return 0;
+}
+double smartNormMat(double (*mat1), double (*mat2), int n)
+{
+	double a = 0;
+	double A=0, max =0;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			a = 0;
+			for (int k = 0; k < n; k++)
+			{
+				a = a + (mat1[i * n + k] * mat2[k * n + j]);
+			}
+			//cout << "i " << i << " j " << j << ' ' << a << endl;
+			if(i==j)
+			{
+				a -= 1;
+			}
+			A += abs(a);
+		}
+		if (A>max)
+		{
+			max = A;
+		}
+	}
+	return max;
 }
